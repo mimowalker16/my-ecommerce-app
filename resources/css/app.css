@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Responsive shop and card layouts for all pages */
+.shop-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.shop-card, .bestseller-card {
+    border: 1px solid #ccc;
+    padding: 12px;
+    width: 200px;
+}
+.bestseller-card {
+    border: 1px solid #4caf50;
+    background: #f6fff6;
+    width: 220px;
+}
+@media (max-width: 900px) {
+    .shop-flex {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+    .shop-card, .bestseller-card {
+        width: 100% !important;
+        max-width: 350px;
+        margin: 0 auto 16px auto;
+    }
+}
+@media (max-width: 600px) {
+    .shop-card, .bestseller-card {
+        width: 100% !important;
+        max-width: 100%;
+        font-size: 15px;
+    }
+    .shop-card img, .bestseller-card img {
+        height: 80px !important;
+    }
+}
+
+:root {
+  --my-yellow: #ffe000;
+  --my-black: #000000;
+  --my-white: #ffffff;
+}
+
+body {
+  background: var(--my-yellow) !important;
+  color: var(--my-black) !important;
+}
+
+.navbar, footer {
+  background: var(--my-black) !important;
+  color: var(--my-white) !important;
+}
+
+.navbar .navbar-brand, .navbar .nav-link, .navbar .nav-link.active, .navbar .nav-link:focus, .navbar .nav-link:hover {
+  color: var(--my-white) !important;
+}
+
+footer {
+  color: var(--my-white) !important;
+}
+
+.card, .table, .form-control, .main-content, .modal-content {
+  background: var(--my-yellow) !important;
+  color: var(--my-black) !important;
+}
+
+.btn, .btn-primary, .btn-outline-primary, .btn-dark, .btn-danger, .btn-success, .btn-secondary {
+  background: var(--my-black) !important;
+  color: var(--my-white) !important;
+  border: none !important;
+}
+
+.btn-outline-primary, .btn-outline-secondary, .btn-outline-success, .btn-outline-danger {
+  background: transparent !important;
+  color: var(--my-black) !important;
+  border: 2px solid var(--my-black) !important;
+}
+
+input, textarea, select {
+  background: var(--my-yellow) !important;
+  color: var(--my-black) !important;
+  border: 1px solid var(--my-black) !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--my-black) !important;
+  box-shadow: 0 0 0 2px var(--my-yellow) !important;
+}
+
+.bg-dark, .bg-primary, .bg-secondary, .bg-success, .bg-warning, .bg-info, .bg-danger {
+  background: var(--my-black) !important;
+  color: var(--my-white) !important;
+}
+
+.text-dark, .text-primary, .text-secondary, .text-success, .text-warning, .text-info, .text-danger {
+  color: var(--my-black) !important;
+}
+
+.text-white, .navbar-dark .navbar-nav .nav-link {
+  color: var(--my-white) !important;
+}
+
+.card-title, .fw-bold, h1, h2, h3, h4, h5, h6, label, .form-label {
+  color: var(--my-black) !important;
+}
+
+.alert {
+  background: var(--my-yellow) !important;
+  color: var(--my-black) !important;
+  border: 1px solid var(--my-black) !important;
+}
+
+.modal-header, .modal-footer {
+  background: var(--my-black) !important;
+  color: var(--my-white) !important;
+}
+
+.modal-title {
+  color: var(--my-white) !important;
+}
+
+.modal-content {
+  border: 2px solid var(--my-black) !important;
+}
