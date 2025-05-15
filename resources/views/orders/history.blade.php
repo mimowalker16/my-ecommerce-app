@@ -44,12 +44,14 @@
                                         @auth
                                             <form class="review-form" data-product="{{ $item->product_id }}">
                                                 <label>Rating:
-                                                    <select name="rating" required>
-                                                        <option value="">-</option>
+                                                    <span class="star-input d-inline-flex">
                                                         @for($i=1;$i<=5;$i++)
-                                                            <option value="{{ $i }}">{{ $i }}</option>
+                                                            <input type="radio" name="rating" id="star-{{ $item->product_id }}-{{ $i }}" value="{{ $i }}" style="display:none;" />
+                                                            <label for="star-{{ $item->product_id }}-{{ $i }}" class="star-label" style="cursor:pointer;font-size:1.5rem;color:#e4e5e9;">
+                                                                &#9733;
+                                                            </label>
                                                         @endfor
-                                                    </select>
+                                                    </span>
                                                 </label>
                                                 <br>
                                                 <label>Comment:
@@ -73,6 +75,16 @@
 @endsection
 
 @push('scripts')
+<style>
+.star-label.selected,
+.star-label:hover,
+.star-label:hover ~ .star-label {
+    color: #FFD600 !important;
+}
+.star-input input[type="radio"]:checked ~ label {
+    color: #FFD600 !important;
+}
+</style>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     @foreach($orders as $order)
@@ -90,13 +102,35 @@ document.addEventListener('DOMContentLoaded', function() {
                     html = '<em>No reviews yet.</em>';
                 } else {
                     data.reviews.forEach(r => {
-                        html += `<div><b>${r.rating}/5</b> - ${r.comment ? r.comment : ''}</div>`;
+                        html += `<div class="d-flex align-items-center mb-1">
+                            <span class="star-rating me-2">${renderStars(r.rating)}</span>
+                            <span>${r.comment ? r.comment : ''}</span>
+                        </div>`;
                     });
+                    if (data.reviews.length > 0) {
+                        const lastReview = data.reviews[data.reviews.length - 1];
+                        html += `<div class="d-flex align-items-center mb-1">
+                            <span class="star-rating me-2">${renderStars(lastReview.rating)}</span>
+                            <span>${lastReview.comment ? lastReview.comment : ''}</span>
+                        </div>`;
+                    }
                 }
                 document.querySelectorAll('#reviews-' + productId + ' .reviews-list').forEach(function(el) {
                     el.innerHTML = html;
                 });
             });
+    }
+
+    function renderStars(rating) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= rating) {
+                stars += `<svg width="18" height="18" fill="#FFD600" viewBox="0 0 24 24" style="vertical-align:middle;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+            } else {
+                stars += `<svg width="18" height="18" fill="#e4e5e9" viewBox="0 0 24 24" style="vertical-align:middle;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+            }
+        }
+        return stars;
     }
 
     document.querySelectorAll('.review-form').forEach(form => {
@@ -123,6 +157,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     msgDiv.textContent = data.error || 'Error submitting review.';
                     msgDiv.style.color = 'red';
                 }
+            });
+        });
+    });
+
+    document.querySelectorAll('.star-input').forEach(function(starInput) {
+        const stars = starInput.querySelectorAll('.star-label');
+        stars.forEach((star, idx) => {
+            star.addEventListener('mouseenter', function() {
+                for(let i=0; i<=idx; i++) stars[i].style.color = '#FFD600';
+                for(let i=idx+1; i<stars.length; i++) stars[i].style.color = '#e4e5e9';
+            });
+            star.addEventListener('mouseleave', function() {
+                const checked = starInput.querySelector('input[type="radio"]:checked');
+                let val = checked ? parseInt(checked.value) : 0;
+                stars.forEach((s, i) => s.style.color = i < val ? '#FFD600' : '#e4e5e9');
+            });
+            star.addEventListener('click', function() {
+                starInput.querySelectorAll('input[type="radio"]')[idx].checked = true;
+                stars.forEach((s, i) => s.style.color = i <= idx ? '#FFD600' : '#e4e5e9');
             });
         });
     });
