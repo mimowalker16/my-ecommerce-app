@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @section('content')
 <div class="container my-4">
-    <h1 class="mb-4" style="font-weight: 600; color: #222; letter-spacing: 1px;">Admin Dashboard</h1>
+    <div class="d-flex align-items-center mb-4">
+        <span class="me-3" style="display:inline-block;vertical-align:middle;">@include('partials.nav-icons', ['icon' => 'admin'])</span>
+        <h1 class="display-5 fw-bold mb-0" style="letter-spacing:1px;">Admin Dashboard</h1>
+    </div>
     <div class="row mb-4">
         <div class="col-md-3 mb-3">
             <div class="card h-100 shadow-sm" style="background: linear-gradient(135deg, #4e73df 0%, #224abe 100%); border: none;">

@@ -20,7 +20,7 @@
         }
         .navbar, footer {
             background: var(--my-black) !important;
-            color: var(--my-white) !important;
+            color: var (--my-white) !important;
         }
         .navbar .navbar-brand, .navbar .nav-link, .navbar .nav-link.active, .navbar .nav-link:focus, .navbar .nav-link:hover {
             color: var(--my-white) !important;
@@ -91,38 +91,62 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-    <div class="container">
-        <a class="navbar-brand" href="/">My E-commerce</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand ps-5" href="/">My E-commerce</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="/">@include('partials.nav-icons', ['icon' => 'home'])</a></li>
-                <li class="nav-item"><a class="nav-link" href="/shop">@include('partials.nav-icons', ['icon' => 'shop'])</a></li>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex flex-row align-items-center">
+                <li class="nav-item me-2"><a class="nav-link" href="/" title="Home" data-bs-toggle="tooltip" data-bs-placement="bottom">@include('partials.nav-icons', ['icon' => 'home'])</a></li>
+                <li class="nav-item me-2"><a class="nav-link" href="/shop" title="Shop" data-bs-toggle="tooltip" data-bs-placement="bottom">@include('partials.nav-icons', ['icon' => 'shop'])</a></li>
                 @auth
                     @if(auth()->user()->isAdmin())
-                        <li class="nav-item"><a class="nav-link" href="/admin">@include('partials.nav-icons', ['icon' => 'admin'])</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/products">@include('partials.nav-icons', ['icon' => 'products'])</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/events/pending">@include('partials.nav-icons', ['icon' => 'events'])</a></li>
+                        <li class="nav-item me-2"><a class="nav-link" href="/admin" title="Admin Dashboard" data-bs-toggle="tooltip" data-bs-placement="bottom">@include('partials.nav-icons', ['icon' => 'admin'])</a></li>
+                        <li class="nav-item me-2"><a class="nav-link" href="/products" title="Products" data-bs-toggle="tooltip" data-bs-placement="bottom">@include('partials.nav-icons', ['icon' => 'products'])</a></li>
+                        @php
+                            $pendingCount = \DB::table('events')->where('approved', false)->count();
+                        @endphp
+                        <li class="nav-item position-relative">
+                            <a class="nav-link" href="/events/pending" title="Pending Events" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                @if($pendingCount > 0)
+                                    <span style="position:absolute;top:2px;right:2px;width:12px;height:12px;background:#dc3545;border-radius:50%;z-index:2;"></span>
+                                    <span style="position:relative;z-index:1;">@include('partials.nav-icons', ['icon' => 'pending-events'])</span>
+                                @else
+                                    @include('partials.nav-icons', ['icon' => 'pending-events'])
+                                @endif
+                            </a>
+                        </li>
                     @endif
                     @if(auth()->user()->isIt())
-                        <li class="nav-item"><a class="nav-link" href="/it">@include('partials.nav-icons', ['icon' => 'admin'])</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/products">@include('partials.nav-icons', ['icon' => 'products'])</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/events">@include('partials.nav-icons', ['icon' => 'events'])</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/events/create">@include('partials.nav-icons', ['icon' => 'events'])</a></li>
+                        <li class="nav-item me-2"><a class="nav-link" href="/products" title="Products" data-bs-toggle="tooltip" data-bs-placement="bottom">@include('partials.nav-icons', ['icon' => 'products'])</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="eventsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Event Actions" data-bs-placement="bottom">
+                                @include('partials.nav-icons', ['icon' => 'event-create-it'])
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="eventsDropdown">
+                                <li><a class="dropdown-item" href="/events">All Events</a></li>
+                                <li><a class="dropdown-item" href="/events/create">Create Event</a></li>
+                                <li><a class="dropdown-item" href="/events/gallery">Event Gallery</a></li>
+                            </ul>
+                        </li>
                     @endif
                     @if(auth()->user()->isClient())
-                        <li class="nav-item"><a class="nav-link" href="/orders/history">@include('partials.nav-icons', ['icon' => 'orders'])</a></li>
+                        <li class="nav-item me-2"><a class="nav-link" href="/orders/history" title="Orders" data-bs-toggle="tooltip" data-bs-placement="bottom">@include('partials.nav-icons', ['icon' => 'orders'])</a></li>
                     @endif
-                    <li class="nav-item"><a class="nav-link" href="/events/gallery">@include('partials.nav-icons', ['icon' => 'events'])</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/cart">@include('partials.nav-icons', ['icon' => 'cart'])</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/profile">@include('partials.nav-icons', ['icon' => 'profile'])</a></li>
+                    <li class="nav-item me-2 position-relative" id="cart-nav-item">
+                        <a class="nav-link" href="/cart" title="Cart" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                            <span style="position:relative;z-index:1;">@include('partials.nav-icons', ['icon' => 'cart'])</span>
+                        </a>
+                    </li>
+                    <li class="nav-item me-2"><a class="nav-link" href="/profile" title="Profile" data-bs-toggle="tooltip" data-bs-placement="bottom">@include('partials.nav-icons', ['icon' => 'profile'])</a></li>
                     <li class="nav-item">
-                        <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                        <form method="POST" action="{{ route('logout') }}" class="d-inline m-0 p-0" style="margin:0;padding:0;">
                             @csrf
-                            <button type="submit" class="btn btn-link nav-link" style="display:inline; padding:0;">Logout</button>
+                            <button type="submit" class="btn btn-link nav-link d-flex align-items-center justify-content-center p-0 m-0" style="height:40px;width:40px;" onclick="return confirm('Are you sure you want to logout?');" title="Logout" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                @include('partials.nav-icons', ['icon' => 'logout'])
+                            </button>
                         </form>
                     </li>
                 @else
@@ -133,7 +157,7 @@
         </div>
     </div>
 </nav>
-<div class="main-content">
+<div class="main-content" style="margin-top:76px;">
     @isset($header)
         <header class="bg-white shadow-sm mb-4">
             <div class="container py-4">
@@ -152,6 +176,14 @@
     </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+        new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+});
+</script>
 @stack('scripts')
 </body>
 </html>

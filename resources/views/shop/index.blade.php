@@ -26,7 +26,41 @@
 
     @if($bestSellers && count($bestSellers))
         <h2 class="mb-3">Best Sellers This Month</h2>
-        <div class="row mb-4">
+        <!-- Carousel for small screens -->
+        <div class="d-block d-md-none mb-4">
+            <div id="bestSellersCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @php $i = 0; @endphp
+                    @foreach($bestSellers as $category => $product)
+                        <div class="carousel-item @if($i === 0) active @endif">
+                            <div class="card border-success mx-auto" style="max-width: 320px;">
+                                @if($product->image_url)
+                                    <img src="{{ $product->image_url }}" class="card-img-top" alt="{{ $product->name }}" style="height:140px;object-fit:cover;">
+                                @else
+                                    <img src="{{ asset('placeholder.svg') }}" class="card-img-top" alt="No image" style="height:140px;object-fit:cover;opacity:0.7;">
+                                @endif
+                                <div class="card-body">
+                                    <h6 class="card-title text-success">{{ $category }}</h6>
+                                    <div class="fw-bold">{{ $product->name }}</div>
+                                    <div class="small">Sold: {{ $product->total_sold }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        @php $i++; @endphp
+                    @endforeach
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#bestSellersCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#bestSellersCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <!-- Grid for md+ screens -->
+        <div class="row mb-4 d-none d-md-flex">
             @foreach($bestSellers as $category => $product)
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                     <div class="card border-success h-100">
@@ -146,6 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 let msg = data.success ? 'Added to cart!' : (data.error || 'Error adding to cart.');
                 alert(msg);
+                // Removed red dot logic
             });
         });
     });

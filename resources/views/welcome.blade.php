@@ -4,7 +4,7 @@
     <div class="row align-items-center mb-5">
         <div class="col-lg-6 mb-4 mb-lg-0">
             <h1 class="display-4 fw-bold mb-3" style="color:#F53003; letter-spacing:1px;">Welcome to My E-commerce</h1>
-            <p class="lead text-muted mb-4">Discover the best products, exclusive deals, and a seamless shopping experience inspired by the Laracom style. Shop with confidence and enjoy fast delivery, secure checkout, and top-rated customer support.</p>
+            <p class="lead text-muted mb-4">MY E-commerce is your one-stop online shop for a wide range of products, exclusive deals, and a seamless shopping experience. Inspired by the best of modern e-commerce, our platform is designed to be fast, secure, and easy to use for everyone.</p>
             <a href="{{ route('shop') }}" class="btn btn-primary btn-lg px-4 me-2" style="background:#F53003; border:none; font-weight:600;">Shop Now</a>
             @guest
                 <a href="{{ route('register') }}" class="btn btn-outline-dark btn-lg px-4">Register</a>

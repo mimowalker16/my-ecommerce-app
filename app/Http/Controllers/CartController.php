@@ -21,6 +21,9 @@ class CartController extends Controller
 
         $user = Auth::user();
         if (!$user) {
+            if ($request->wantsJson() || $request->ajax() || $request->expectsJson()) {
+                return response()->json(['success' => false, 'error' => 'Not authenticated.'], 401);
+            }
             return Redirect::route('login');
         }
 
@@ -39,6 +42,9 @@ class CartController extends Controller
             ]);
         }
 
+        if ($request->wantsJson() || $request->ajax() || $request->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
         return back()->with('success', 'Product added to cart!');
     }
 

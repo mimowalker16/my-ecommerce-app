@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @section('content')
 <div class="container my-4">
-    <h1 class="mb-4" style="font-weight:600;letter-spacing:1px;">Edit Product</h1>
+    <div class="d-flex align-items-center mb-4">
+        <span class="me-3" style="display:inline-block;vertical-align:middle;">@include('partials.nav-icons', ['icon' => 'products'])</span>
+        <h1 class="display-5 fw-bold mb-0" style="letter-spacing:1px;">Edit Product</h1>
+    </div>
     <div class="card shadow mb-4">
         <div class="card-body">
             <form method="POST" action="{{ route('products.update', $product) }}" enctype="multipart/form-data">

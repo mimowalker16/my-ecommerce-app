@@ -2,7 +2,10 @@
 @section('content')
 <div class="container my-5 d-flex justify-content-center align-items-center" style="min-height:60vh;">
     <div class="card shadow p-4" style="max-width:400px;width:100%;">
-        <h1 class="mb-4 text-center" style="font-weight:600;letter-spacing:1px;">Login</h1>
+        <div class="d-flex align-items-center mb-4">
+            <span class="me-3" style="display:inline-block;vertical-align:middle;">@include('partials.nav-icons', ['icon' => 'profile'])</span>
+            <h1 class="display-5 fw-bold mb-0 text-center w-100" style="letter-spacing:1px;">Login</h1>
+        </div>
         <form method="POST" action="{{ route('login') }}">
             @csrf
             <div class="mb-3">
