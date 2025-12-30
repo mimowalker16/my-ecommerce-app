@@ -13,6 +13,8 @@ class UserSeeder extends Seeder
      */  
     public function run(): void  
     {  
+        \DB::table('users')->delete();
+
         // Predefined admin account
         User::create([
             'first_name' => 'jimmy',
